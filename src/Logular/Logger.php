@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-namespace Cheezykins\Logular;
+namespace Logular;
 
 abstract class Logger implements LoggerInterface
 {

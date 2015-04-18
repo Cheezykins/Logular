@@ -24,24 +24,12 @@
  * THE SOFTWARE.
  */
 
-namespace Cheezykins\Logular\Modules;
+namespace Logular;
 
-use Cheezykins\Logular as Logular;
-
-class ConsoleLogger extends Logular\Logger
+interface LoggerInterface
 {
 
-    public function entry($message, $level = Logular\LogLevel::INFO, $variable = null)
-    {
+    public function entry($message, $level = LogLevel::INFO, $variable = null);
 
-        try {
-            $message = parent::entry($message, $level, $variable);
-        } catch (\Exception $e) {
-            return;
-        }
-
-        echo $message, PHP_EOL;
-
-        return $message;
-    }
+    public function setLogLevel($level);
 }

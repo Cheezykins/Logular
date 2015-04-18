@@ -24,9 +24,9 @@
  * THE SOFTWARE.
  */
 
-namespace Cheezykins\Logular\Modules;
+namespace Logular\Modules;
 
-use Cheezykins\Logular as Logular;
+use Logular as Logular;
 
 class FileLogger extends Logular\Logger
 {

@@ -24,57 +24,24 @@
  * THE SOFTWARE.
  */
 
-namespace Cheezykins\Logular\Modules;
+namespace Logular\Modules;
 
-use Cheezykins\Logular as Logular;
+use Logular as Logular;
 
-class PDOLogger extends Logular\Logger
+class ConsoleLogger extends Logular\Logger
 {
-
-    private $pdo;
-    private $insert;
-
-    public static function getStatement($statement)
-    {
-        ob_start();
-        $statement->debugDumpParams();
-        return ob_get_clean();
-    }
-
-    public function __construct($dsn = false, $username = "", $password = "", $attributes = [], $pdo = false)
-    {
-
-        if (!$dsn && !$pdo) {
-            throw new \Exception("You must provide a DSN or PDO object");
-        }
-
-        if ($dsn) {
-            $pdo = new \PDO($dsn, $username, $password, $attributes);
-            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        }
-
-        $this->pdo = $pdo;
-        $this->insert = $pdo->prepare("INSERT INTO logging (level, message, pid) VALUES (:level, :message, :pid)");
-
-        parent::__construct();
-    }
 
     public function entry($message, $level = Logular\LogLevel::INFO, $variable = null)
     {
-        if ($level < $this->minLogLevel) {
+
+        try {
+            $message = parent::entry($message, $level, $variable);
+        } catch (\Exception $e) {
             return;
         }
 
-        $params = [
-            ':level' => LogLevel::getText($level),
-            ':message' => $message,
-            ':pid' => getmypid()
-        ];
+        echo $message, PHP_EOL;
 
-        try {
-            $this->insert->execute($params);
-        } catch (Exception $e) {
-            
-        }
+        return $message;
     }
 }
